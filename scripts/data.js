@@ -30,7 +30,7 @@ const casasData = [
     },
     {
         img: "./images/anuncio2.jpg",
-        title: "Casa con terminados de lujo",
+        title: "Casa con terminado de lujo",
         text: "Casa con diseño moderno, así como tecnología inteligente y amueblada",
         price: "u$s275.000",
         features: [
