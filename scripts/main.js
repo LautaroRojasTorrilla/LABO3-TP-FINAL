@@ -3,8 +3,19 @@ document.addEventListener("DOMContentLoaded", function() {
     renderCasas(casasData, document.getElementById('casasContent'));
     renderBlog(blogData, document.getElementById('blogContent'));
     renderComments(commentsData, document.getElementById('commentsContent'));
+    initializePopovers();
     updateFooterYear();
 });
+
+function initializePopovers() {
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.forEach(function (popoverTriggerEl) {
+        new bootstrap.Popover(popoverTriggerEl, {
+            sanitize: false,
+            html: true
+        });
+    });
+}
 
 function createElement(tag, classNames = '', textContent = '', attributes = {}) {
     const element = document.createElement(tag);
@@ -14,6 +25,46 @@ function createElement(tag, classNames = '', textContent = '', attributes = {}) 
     return element;
 }
 
+function createPopoverContent() {
+    const container = document.createElement('div');
+    container.classList.add('p-2');
+
+    const iframe = document.createElement('iframe');
+    iframe.classList.add('w-100');
+    iframe.style.height = '260px';
+    iframe.style.borderRadius = '10px';
+    iframe.style.boxShadow = '2px 4px 4px rgba(0, 0, 0, 0.25)';
+    iframe.style.border = '1px solid #bcbcbc';
+    iframe.src = 'https://dolarhoy.com/i/cotizaciones/dolar-blue';
+    iframe.frameBorder = '0';
+
+    container.appendChild(iframe);
+
+    return container.outerHTML;
+}
+
+function createCard(imgSrc, imgAlt, titleText, bodyContent, price, cardClasses = 'card h-100 text-center rounded shadow-sm bg-light') { // Agregamos la clase bg-light aquí
+    const card = createElement('div', cardClasses);
+
+    const img = createElement('img', 'card-img-top rounded', '', { src: imgSrc, alt: imgAlt });
+    const cardBody = createElement('div', 'card-body d-flex flex-column');
+
+    const title = createElement('h3', 'card-title fw-bold', titleText);
+    const text = createElement('p', 'card-text flex-grow-1 text-muted', bodyContent);
+    const priceElement = createElement('p', 'text-green-dollar text-center', price, {
+        'data-bs-toggle': 'popover',
+        'data-bs-html': 'true',
+        'data-bs-content': createPopoverContent()
+    });
+
+    cardBody.appendChild(title);
+    cardBody.appendChild(text);
+    cardBody.appendChild(priceElement);
+    card.appendChild(img);
+    card.appendChild(cardBody);
+
+    return card;
+}
 
 function renderMasNosotros(data, container) {
     data.forEach(item => {
