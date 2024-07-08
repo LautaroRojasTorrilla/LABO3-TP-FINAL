@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +11,6 @@
     <script src="./scripts/data.js" defer></script>
     <script src="./scripts/main.js" defer></script>
 </head>
-
 <body>
     <header class="bg-dark text-white py-5"
         style="background-image: url(./images/header.jpg); background-repeat: no-repeat; background-position: center center;">
@@ -37,6 +35,7 @@
             </div>
         </div>
     </header>
+    
     <section id="masNosotros" class="py-5">
         <div class="container">
             <h2 class="text-center text-secondary display-5">Más sobre nosotros</h2>
@@ -57,6 +56,7 @@
             </div>
         </div>
     </main>
+
     <section class="text-white py-5"
         style="background-image: url(./images/encuentra.jpg); background-repeat: no-repeat; background-position: center center;">
         <div class="container text-center">
@@ -65,6 +65,7 @@
             <a href="#" class="btn btn-warning mt-3">Contactanos</a>
         </div>
     </section>
+
     <div class="py-5">
         <div class="container">
             <div class="row">
@@ -80,13 +81,11 @@
                         <div class="carousel-inner" id="commentsContent">
                             <!-- Contenido dinámico -->
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#commentsCarousel"
-                            data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#commentsCarousel" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#commentsCarousel"
-                            data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#commentsCarousel" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -94,7 +93,7 @@
                 </div>
             </div>
         </div>
-    </div>          
+    </div>
 
     <footer class="bg-dark text-white py-4">
         <div class="container">
@@ -107,6 +106,61 @@
             <p class="text-center mt-3">Todos los derechos reservados <time id="currentYear"></time> &copy;</p>
         </div>
     </footer>
-</body>
 
+    <!-- Templates -->
+    <template id="property-card-template">
+        <article class="col-md-4 mb-4">
+            <div class="card h-100 text-center rounded shadow-sm bg-light">
+                <img src="" class="card-img-top rounded" alt="">
+                <div class="card-body d-flex flex-column">
+                    <h3 class="card-title fw-bold"></h3>
+                    <p class="card-text flex-grow-1 text-muted"></p>
+                    <p class="text-green-dollar text-center"></p>
+                    <ul class="list-inline d-flex justify-content-around"></ul>
+                    <a href="#" class="btn btn-warning mt-2 btn-lg btn-block">Ver propiedad</a>
+                </div>
+            </div>
+        </article>
+    </template>
+
+    <template id="blog-post-template">
+        <article class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col-auto d-none d-lg-block blog-image">
+                <img src="" class="img-fluid" alt="">
+            </div>
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0 fw-bold"></h3>
+                <div class="mb-1 text-muted"></div>
+                <p class="card-text mb-auto text-muted"></p>
+            </div>
+        </article>
+    </template>
+
+    <template id="comment-template">
+        <div class="carousel-item">
+            <div class="row justify-content-center">
+                <div class="col-md-6 mb-4">
+                    <div class="card text-white p-3 comment-card shadow-sm">
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p></p>
+                                <footer class="blockquote-footer"></footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card text-white p-3 comment-card shadow-sm">
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p></p>
+                                <footer class="blockquote-footer"></footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</body>
 </html>

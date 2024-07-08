@@ -1,31 +1,35 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
     renderMasNosotros(masNosotrosData, document.getElementById('masNosotrosContent'));
     renderCasas(casasData, document.getElementById('casasContent'));
     renderBlog(blogData, document.getElementById('blogContent'));
     renderComments(commentsData, document.getElementById('commentsContent'));
+
+    // Inicializar todos los popovers
     initializePopovers();
+
+    // Actualizar el año en el footer
     updateFooterYear();
 });
 
-function initializePopovers() {
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    popoverTriggerList.forEach(function (popoverTriggerEl) {
+const initializePopovers = () => {
+    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.forEach(popoverTriggerEl => {
         new bootstrap.Popover(popoverTriggerEl, {
             sanitize: false,
             html: true
         });
     });
-}
+};
 
-function createElement(tag, classNames = '', textContent = '', attributes = {}) {
+const createElement = (tag, classNames = '', textContent = '', attributes = {}) => {
     const element = document.createElement(tag);
     if (classNames) element.className = classNames;
     if (textContent) element.textContent = textContent;
     Object.keys(attributes).forEach(key => element.setAttribute(key, attributes[key]));
     return element;
-}
+};
 
-function createPopoverContent() {
+const createPopoverContent = () => {
     const container = document.createElement('div');
     container.classList.add('p-2');
 
@@ -41,32 +45,9 @@ function createPopoverContent() {
     container.appendChild(iframe);
 
     return container.outerHTML;
-}
+};
 
-function createCard(imgSrc, imgAlt, titleText, bodyContent, price, cardClasses = 'card h-100 text-center rounded shadow-sm bg-light') { // Agregamos la clase bg-light aquí
-    const card = createElement('div', cardClasses);
-
-    const img = createElement('img', 'card-img-top rounded', '', { src: imgSrc, alt: imgAlt });
-    const cardBody = createElement('div', 'card-body d-flex flex-column');
-
-    const title = createElement('h3', 'card-title fw-bold', titleText);
-    const text = createElement('p', 'card-text flex-grow-1 text-muted', bodyContent);
-    const priceElement = createElement('p', 'text-green-dollar text-center', price, {
-        'data-bs-toggle': 'popover',
-        'data-bs-html': 'true',
-        'data-bs-content': createPopoverContent()
-    });
-
-    cardBody.appendChild(title);
-    cardBody.appendChild(text);
-    cardBody.appendChild(priceElement);
-    card.appendChild(img);
-    card.appendChild(cardBody);
-
-    return card;
-}
-
-function renderMasNosotros(data, container) {
+const renderMasNosotros = (data, container) => {
     data.forEach(item => {
         const col = createElement('div', 'col-md-4 mb-4');
 
@@ -79,99 +60,96 @@ function renderMasNosotros(data, container) {
         col.appendChild(text);
         container.appendChild(col);
     });
-}
+};
 
-function renderCasas(data, container) {
+const renderCasas = (data, container) => {
+    const template = document.getElementById('property-card-template').content;
     data.forEach(item => {
-        const col = createElement('div', 'col-md-4 mb-4');
+        const clone = document.importNode(template, true);
+        const img = clone.querySelector('.card-img-top');
+        const title = clone.querySelector('.card-title');
+        const text = clone.querySelector('.card-text');
+        const price = clone.querySelector('.text-green-dollar');
+        const ul = clone.querySelector('.list-inline');
 
-        const features = item.features.map(feature => {
+        img.src = item.img;
+        img.alt = item.title;
+        title.textContent = item.title;
+        text.textContent = item.text;
+        price.textContent = item.price;
+        price.setAttribute('data-bs-toggle', 'popover');
+        price.setAttribute('data-bs-html', 'true');
+        price.setAttribute('data-bs-content', createPopoverContent());
+
+        item.features.forEach(feature => {
             const li = createElement('li', 'list-inline-item');
             const featureImg = createElement('img', '', '', { src: feature.img, alt: 'icono' });
             const span = createElement('span', '', feature.text);
             li.appendChild(featureImg);
             li.appendChild(span);
-            return li;
+            ul.appendChild(li);
         });
 
-        const ul = createElement('ul', 'list-inline d-flex justify-content-around'); // Clases de Bootstrap para alineación
-        features.forEach(feature => ul.appendChild(feature));
-
-        const button = createElement('a', 'btn btn-warning mt-2 btn-lg btn-block', 'Ver propiedad', { href: '#' });
-
-        const card = createCard(item.img, item.imgAlt, item.title, item.text, item.price);
-        card.querySelector('.card-body').appendChild(ul);
-        card.querySelector('.card-body').appendChild(button);
-
-        col.appendChild(card);
-        container.appendChild(col);
+        container.appendChild(clone);
     });
-}
+};
 
-function renderBlog(data, container) {
+const renderBlog = (data, container) => {
+    const template = document.getElementById('blog-post-template').content;
     data.forEach(item => {
-        const row = createElement('div', 'row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative');
+        const clone = document.importNode(template, true);
+        const img = clone.querySelector('.img-fluid');
+        const title = clone.querySelector('.fw-bold');
+        const meta = clone.querySelector('.text-muted');
+        const text = clone.querySelector('.card-text');
 
-        const imgCol = createElement('div', 'col-auto d-none d-lg-block blog-image');
-        const img = createElement('img', 'img-fluid', '', { src: item.img, alt: item.title });
-        img.style.maxHeight = '200px';
-        img.style.objectFit = 'cover';
-        imgCol.appendChild(img);
+        img.src = item.img;
+        img.alt = item.title;
+        title.textContent = item.title;
+        meta.textContent = `Escrito el: ${item.date} por: ${item.author}`;
+        text.textContent = item.text;
 
-        const contentCol = createElement('div', 'col p-4 d-flex flex-column position-static');
-        const title = createElement('h3', 'mb-0 fw-bold', item.title);
-        const meta = createElement('div', 'mb-1 text-muted', `Escrito el: ${item.date} por: ${item.author}`);
-        const text = createElement('p', 'card-text mb-auto text-muted', item.text);
-
-        contentCol.appendChild(title);
-        contentCol.appendChild(meta);
-        contentCol.appendChild(text);
-
-        row.appendChild(imgCol);
-        row.appendChild(contentCol);
-        container.appendChild(row);
+        container.appendChild(clone);
     });
-}
+};
 
-function renderComments(data, container) {
+const renderComments = (data, container) => {
     const itemsPerSlide = 2;
     let currentIndex = 0;
     let isFirstSlide = true;
 
     while (currentIndex < data.length) {
         const item = createElement('div', `carousel-item ${isFirstSlide ? 'active' : ''}`);
-        const row = createElement('div', 'row');
+        const row = createElement('div', 'row justify-content-center');
 
-        for (let i = 0; i < itemsPerSlide; i++) {
-            if (currentIndex < data.length) {
-                const col = createElement('div', 'col-md-6');
-                const card = createElement('div', 'card text-white mb-4 p-3 comment-card shadow-sm');
-                card.style.backgroundColor = '#66cdaa'; // Verde manzana más opaco
-                card.style.borderRadius = '15px'; // Bordes redondeados
+        for (let i = 0; i < itemsPerSlide && currentIndex < data.length; i++) {
+            const col = createElement('div', 'col-md-6 mb-4');
+            const card = createElement('div', 'card text-white p-3 comment-card shadow-sm');
+            card.style.backgroundColor = '#66cdaa'; // Verde manzana más opaco
+            card.style.borderRadius = '15px'; // Bordes redondeados
 
-                const cardBody = createElement('div', 'card-body');
-                const blockquote = createElement('blockquote', 'blockquote mb-0');
-                const p = createElement('p', '', data[currentIndex].text);
-                const footer = createElement('footer', 'blockquote-footer', data[currentIndex].author);
+            const cardBody = createElement('div', 'card-body');
+            const blockquote = createElement('blockquote', 'blockquote mb-0');
+            const p = createElement('p', '', data[currentIndex].text);
+            const footer = createElement('footer', 'blockquote-footer text-white', data[currentIndex].author);
 
-                blockquote.appendChild(p);
-                blockquote.appendChild(footer);
-                cardBody.appendChild(blockquote);
-                card.appendChild(cardBody);
-                col.appendChild(card);
-                row.appendChild(col);
+            blockquote.appendChild(p);
+            blockquote.appendChild(footer);
+            cardBody.appendChild(blockquote);
+            card.appendChild(cardBody);
+            col.appendChild(card);
+            row.appendChild(col);
 
-                currentIndex++;
-            }
+            currentIndex++;
         }
 
         item.appendChild(row);
         container.appendChild(item);
         isFirstSlide = false;
     }
-}
+};
 
-function updateFooterYear() {
+const updateFooterYear = () => {
     const currentYear = new Date().getFullYear();
     document.getElementById('currentYear').textContent = currentYear;
-}
+};

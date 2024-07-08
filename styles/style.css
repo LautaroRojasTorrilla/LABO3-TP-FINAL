@@ -90,7 +90,7 @@ footer p {
 
 .display-5 {
     font-size: 2rem;
-    margin-bottom: 1rem; /* Añadir margen inferior */
+    margin-bottom: 2rem; /* Añadir margen inferior */
 }
 
 .blog-image img {
@@ -101,10 +101,11 @@ footer p {
 /* Estilos personalizados para los comentarios */
 .comment-card {
     background-color: #66cdaa; /* Verde manzana más opaco */
-    border-radius: 15px; /* Bordes redondeados */
-    color: white; /* Texto en blanco */
+    border-radius: 15px;
+    color: #fff; /* Texto en blanco para mejor contraste */
+    text-align: center; /* Centrar el texto */
 }
 
-.comment-card .blockquote-footer {
-    color: rgba(255, 255, 255, 0.7); /* Texto del footer en blanco translúcido */
+.blockquote-footer {
+    color: #fff;
 }
