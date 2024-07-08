@@ -76,6 +76,7 @@ footer p {
 }
 
 /* Estilos para la sección "Encuentra la casa de tus sueños" */
+
 .bg-grey {
     background-color: grey;
 }
@@ -108,4 +109,43 @@ footer p {
 
 .blockquote-footer {
     color: #fff;
+}
+
+/* Estilos para el botón de WhatsApp */
+.whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #25D366;
+    border-radius: 50%;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    padding: 15px; /* Aumenta el padding para hacer el botón más grande */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.whatsapp-button:hover {
+    background-color: #1EBE57;
+    transform: scale(1.1);
+}
+
+.whatsapp-button img {
+    width: 50px; /* Aumenta el tamaño del icono */
+    height: 50px; /* Aumenta el tamaño del icono */
+}
+
+/* Asegurar márgenes y espaciado consistentes */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header, section, main, footer, .container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+header, section, main, footer {
+    margin-bottom: 30px;
 }
